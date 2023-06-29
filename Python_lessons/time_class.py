@@ -1,30 +1,54 @@
+class TimeError(Exception):
+    pass
+
 class Time:
     def __init__(self, hour=0, minute=0, second=0):
-        self.second = second % 60
         extra_minutes = second // 60
-        self.minute = (minute + extra_minutes) % 60
         extra_hours = (minute + extra_minutes) // 60
-        self.hour = (hour + extra_hours) % 24
+        self.__second = second % 60
+        self.__minute = (minute + extra_minutes) % 60
+        self.__hour = (hour + extra_hours) % 24
+    
+    def get_hour(self):
+        return self.__hour
+    
+    def get_minute(self):
+        return self.__minute
+    
+    def get_second(self):
+        return self.__second
+    
+    @property
+    def hour(self):
+        return self.__hour
+    
+    @hour.setter
+    def hour(self, new_hour):
+        if new_hour < 0 or new_hour > 24:
+            raise TimeError("Invalid hour value")
+        extra_minutes = self.__second // 60
+        extra_hours = (self.__minute + extra_minutes) // 60
+        self.__hour = (new_hour + extra_hours) % 24
     
     def __repr__(self):
-        return f"{self.hour:02d}:{self.minute:02d}:{self.second:02d}"
+        return f"{self.__hour:02d}:{self.__minute:02d}:{self.__second:02d}"
     
     def add_hour(self, h):
         self.hour = (self.hour + h) % 24
     
     def add_minute(self, m):
-        self.minute = (self.minute + m) % 60
-        extra_hours = (self.minute + m) // 60
-        self.hour = (self.hour + extra_hours) % 24
+        extra_hours = (self.__minute + m) // 60
+        self.__minute = (self.__minute + m) % 60
+        self.add_hour(extra_hours)
     
     def add_second(self, s):
-        self.second = (self.second + s) % 60
-        extra_minutes = (self.second + s) // 60
-        self.minute = (self.minute + extra_minutes) % 60
-        extra_hours = (self.minute + extra_minutes) // 60
-        self.hour = (self.hour + extra_hours) % 24
+        extra_minutes = (self.__second + s) // 60
+        self.__second = (self.__second + s) % 60
+        self.add_minute(extra_minutes)
 
-time_class = Time(1,241,121)
-#time_class.add_second(0)
-#time_class.add_hour(25)
+
+time_class = Time(25, 61, 60)
+#print(time_class)
+#time_class.add_second(2)
+#print(time_class))
 print(time_class)
