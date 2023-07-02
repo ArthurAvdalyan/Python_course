@@ -1,7 +1,28 @@
+class ValueError(Exception):
+    def __init__(self, message, value):
+        self.message = message
+        self.value = value
+
 class Money:
     def __init__(self, amount=0, currency='USD'):
         self.amount = amount
         self.currency = currency
+
+    @property
+    def amount(self):
+        return self.__amount
+    
+    @amount.setter
+    def amount(self, value):
+        self.__amount = value
+    
+    @property
+    def currency(self):
+        return self.__currency
+    
+    @currency.setter
+    def currency(self, value):
+        self.__currency = value
     
     def __repr__(self):
         return f"{self.amount} {self.currency}"
@@ -31,28 +52,28 @@ class Money:
             new_amount = self.amount + other.amount
             return Money(new_amount, self.currency)
         else:
-            raise TypeError("Unsupported operand type for +: 'Money' and '{type(other).__name__}'")
+            raise ValueError("Unsupported operand type for +: 'Money' and '{type(other).__name__}'")
     
     def __sub__(self, other):
         if isinstance(other, Money) and self.currency == other.currency:
             new_amount = self.amount - other.amount
             return Money(new_amount, self.currency)
         else:
-            raise TypeError("Unsupported operand type for -: 'Money' and '{type(other).__name__}'")
+            raise ValueError("Unsupported operand type for -: 'Money' and '{type(other).__name__}'")
     
     def __mul__(self, other):
         if isinstance(other, (int, float)):
             new_amount = self.amount * other
             return Money(new_amount, self.currency)
         else:
-            raise TypeError("Unsupported operand type for *: 'Money' and '{type(other).__name__}'")
+            raise ValueError("Unsupported operand type for *: 'Money' and '{type(other).__name__}'")
     
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
             new_amount = self.amount / other
             return Money(new_amount, self.currency)
         else:
-            raise TypeError("Unsupported operand type for /: 'Money' and '{type(other).__name__}'")
+            raise ValueError("Unsupported operand type for /: 'Money' and '{type(other).__name__}'")
     
     def __eq__(self, other):
         if isinstance(other, Money) and self.currency == other.currency:
@@ -64,13 +85,13 @@ class Money:
         if isinstance(other, Money) and self.currency == other.currency:
             return self.amount < other.amount
         else:
-            raise TypeError("Unsupported operand type for <: 'Money' and '{type(other).__name__}'")
+            raise ValueError("Unsupported operand type for <: 'Money' and '{type(other).__name__}'")
     
     def __gt__(self, other):
         if isinstance(other, Money) and self.currency == other.currency:
             return self.amount > other.amount
         else:
-            raise TypeError("Unsupported operand type for >: 'Money' and '{type(other).__name__}'")
+            raise ValueError("Unsupported operand type for >: 'Money' and '{type(other).__name__}'")
         
         
 money = Money(100, 'USD')

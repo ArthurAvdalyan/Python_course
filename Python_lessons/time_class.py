@@ -1,5 +1,7 @@
 class TimeError(Exception):
-    pass
+    def __init__(self, message, value):
+        self.message = message
+        self.value = value
 
 class Time:
     def __init__(self, hour=0, minute=0, second=0):
@@ -8,16 +10,7 @@ class Time:
         self.__second = second % 60
         self.__minute = (minute + extra_minutes) % 60
         self.__hour = (hour + extra_hours) % 24
-    
-    def get_hour(self):
-        return self.__hour
-    
-    def get_minute(self):
-        return self.__minute
-    
-    def get_second(self):
-        return self.__second
-    
+      
     @property
     def hour(self):
         return self.__hour
